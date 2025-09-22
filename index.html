@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apresentação: Gerenciamento de Memória</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22256%22 height=%22256%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23ca2929%22></rect><path fill=%22%23fff%22 d=%22M20 80L20 20L35 20L35 65L65 65L65 80L20 80ZM80 80L80 20L65 20L65 80L80 80Z%22></path></svg>" />
     <style>
-        /* Estilos Gerais */
         :root {
             --primary-color: #ca2929; 
             --secondary-color: #000000; 
@@ -30,7 +30,6 @@
             color: var(--text-color);
         }
 
-       
         .presentation-container {
             width: 100%;
             height: 100%;
@@ -38,7 +37,6 @@
             overflow: hidden;
         }
 
-        
         .slide {
             position: absolute;
             top: 0;
@@ -66,7 +64,6 @@
             z-index: 1;
         }
 
-       
         .slide.active .slide-content > * {
             animation: fadeIn-Up 0.7s 0.3s both;
         }
@@ -82,11 +79,9 @@
             }
         }
 
-
         .slide-content {
              max-width: 900px;
         }
-        
         
         h1 {
             font-size: 3.5rem;
@@ -116,7 +111,7 @@
         }
 
         ul li {
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2342a5f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat left center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23ca2929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat left center;
             padding-left: 35px;
             margin-bottom: 1rem;
         }
@@ -126,7 +121,6 @@
             color: var(--primary-color);
         }
 
-      
         .slide-title {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: var(--light-text-color);
@@ -159,8 +153,6 @@
             color: var(--secondary-color);
         }
 
-
-    
         .nav-arrow {
             position: absolute;
             top: 50%;
@@ -211,7 +203,6 @@
             background-color: var(--primary-color);
         }
         
-       
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             h2 { font-size: 2rem; }
@@ -222,23 +213,10 @@
 
     </style>
 </head>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apresentação: Gerenciamento de Memória</title>
-    
-    <!-- ADICIONE ESTA LINHA ABAIXO -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22256%22 height=%22256%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230d47a1%22></rect><path fill=%22%23fff%22 d=%22M20 80L20 20L35 20L35 65L65 65L65 80L20 80ZM80 80L80 20L65 20L65 80L80 80Z%22></path></svg>" />
-
-    <style>
-        /* seu CSS continua aqui... */
-    </style>
-</head>
 <body>
 
     <div class="presentation-container">
 
-       
         <section class="slide active slide-title" id="slide1">
             <div class="slide-content">
                 <p class="subtitle">Análise e Desenvolvimento de Sistemas - IESB 2025</p>
@@ -248,7 +226,6 @@
             </div>
         </section>
 
-       
         <section class="slide" id="slide2">
             <div class="slide-content">
                 <h2>O que é Gerenciamento de Memória?</h2>
@@ -256,7 +233,6 @@
             </div>
         </section>
 
-        
         <section class="slide" id="slide3">
             <div class="slide-content">
                  <h2>Memória Real vs. Virtual</h2>
@@ -273,7 +249,6 @@
             </div>
         </section>
         
-        
         <section class="slide" id="slide4">
              <div class="slide-content">
                 <h2>Técnicas de Gerenciamento</h2>
@@ -285,7 +260,6 @@
             </div>
         </section>
 
-        <!-- Slide 5: Estratégias de Substituição -->
         <section class="slide" id="slide5">
             <div class="slide-content">
                 <h2>Estratégias de Substituição de Páginas</h2>
@@ -299,7 +273,6 @@
             </div>
         </section>
 
-        <!-- Slide 6: Gerenciamento no Windows -->
         <section class="slide" id="slide6">
             <div class="slide-content">
                 <h2>Gerenciamento de Memória no Windows</h2>
@@ -321,25 +294,19 @@
             </div>
         </section>
 
-        <!-- Slide 7: Conclusão -->
         <section class="slide slide-title" id="slide7">
             <div class="slide-content">
                 <h1>Obrigado!</h1>
                 <p class="subtitle">Perguntas?</p>
             </div>
         </section>
-
-
-        <!-- Navegação e Progresso -->
         <button class="nav-arrow" id="prev">&#10094;</button>
         <button class="nav-arrow" id="next">&#10095;</button>
         <div class="progress-dots"></div>
-
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Seleciona todos os elementos relevantes
             const slides = document.querySelectorAll('.slide');
             const nextBtn = document.getElementById('next');
             const prevBtn = document.getElementById('prev');
@@ -348,7 +315,6 @@
             let currentSlide = 0;
             const totalSlides = slides.length;
 
-            // Função para criar os indicadores de progresso (pontos)
             function createDots() {
                 for (let i = 0; i < totalSlides; i++) {
                     const dot = document.createElement('div');
@@ -357,10 +323,8 @@
                     dotsContainer.appendChild(dot);
                 }
             }
-            
-            // Função para atualizar a aparência dos slides e dos pontos
+
             function updateSlides() {
-                // Atualiza os slides
                 slides.forEach((slide, index) => {
                     if (index === currentSlide) {
                         slide.classList.add('active');
@@ -369,7 +333,6 @@
                     }
                 });
 
-                // Atualiza os pontos
                 const dots = document.querySelectorAll('.dot');
                 dots.forEach((dot, index) => {
                     if (index === currentSlide) {
@@ -378,13 +341,11 @@
                         dot.classList.remove('active');
                     }
                 });
-                
-                // Esconde/mostra botões de navegação
+
                 prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
                 nextBtn.style.display = currentSlide === totalSlides - 1 ? 'none' : 'flex';
             }
 
-            // Funções de navegação
             function showNextSlide() {
                 if (currentSlide < totalSlides - 1) {
                     currentSlide++;
@@ -406,7 +367,6 @@
                 }
             }
 
-            // Adiciona os event listeners para os botões e teclado
             nextBtn.addEventListener('click', showNextSlide);
             prevBtn.addEventListener('click', showPrevSlide);
             
@@ -418,7 +378,6 @@
                 }
             });
 
-            // Inicialização da apresentação
             createDots();
             updateSlides();
         });
