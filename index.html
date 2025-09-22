@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: Gerenciamento de Memória</title>
+    <style>
+        /* Estilos Gerais */
+        :root {
+            --primary-color: #ca2929; 
+            --secondary-color: #000000; 
+            --accent-color: #520012; 
+            --background-color: #f0f4f8; 
+            --text-color: #212121; 
+            --light-text-color: #ffffff;
+            --slide-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.15);
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--text-color);
+        }
+
+       
+        .presentation-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--light-text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            visibility: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            visibility: visible;
+            z-index: 1;
+        }
+
+       
+        .slide.active .slide-content > * {
+            animation: fadeIn-Up 0.7s 0.3s both;
+        }
+        
+        @keyframes fadeIn-Up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .slide-content {
+             max-width: 900px;
+        }
+        
+        
+        h1 {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 2.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        p, li {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+            display: inline-block;
+        }
+
+        ul li {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2342a5f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat left center;
+            padding-left: 35px;
+            margin-bottom: 1rem;
+        }
+        
+        strong {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+      
+        .slide-title {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text-color);
+        }
+
+        .slide-title h1, .slide-title p {
+            color: var(--light-text-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .slide-title .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            text-align: left;
+        }
+        .comparison-grid div {
+            padding: 1.5rem;
+            background-color: var(--background-color);
+            border-radius: 8px;
+            border-left: 5px solid var(--accent-color);
+        }
+         .comparison-grid h3 {
+            margin-top: 0;
+            color: var(--secondary-color);
+        }
+
+
+    
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            font-size: 2rem;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .nav-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        #prev { left: 20px; }
+        #next { right: 20px; }
+        
+        .progress-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: var(--primary-color);
+        }
+        
+       
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            p, li { font-size: 1rem; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .nav-arrow { font-size: 1.5rem; width: 40px; height: 40px; }
+        }
+
+    </style>
+</head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: Gerenciamento de Memória</title>
+    
+    <!-- ADICIONE ESTA LINHA ABAIXO -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22256%22 height=%22256%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230d47a1%22></rect><path fill=%22%23fff%22 d=%22M20 80L20 20L35 20L35 65L65 65L65 80L20 80ZM80 80L80 20L65 20L65 80L80 80Z%22></path></svg>" />
+
+    <style>
+        /* seu CSS continua aqui... */
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+
+       
+        <section class="slide active slide-title" id="slide1">
+            <div class="slide-content">
+                <p class="subtitle">Análise e Desenvolvimento de Sistemas - IESB 2025</p>
+                <h1>Gerenciamento de Memória e Memória Virtual</h1>
+                <p><strong>Autor:</strong> João Victor da Silva Bezerra de Sousa</p>
+                <p><strong>Matrícula:</strong> 2524290001</p>
+            </div>
+        </section>
+
+       
+        <section class="slide" id="slide2">
+            <div class="slide-content">
+                <h2>O que é Gerenciamento de Memória?</h2>
+                <p>É a função do Sistema Operacional que <strong>controla e organiza</strong> a memória do computador. Ele aloca, libera e gerencia o espaço para todos os processos, garantindo a execução simultânea de múltiplos programas de forma eficiente.</p>
+            </div>
+        </section>
+
+        
+        <section class="slide" id="slide3">
+            <div class="slide-content">
+                 <h2>Memória Real vs. Virtual</h2>
+                <div class="comparison-grid">
+                    <div>
+                        <h3>Memória Real (RAM)</h3>
+                        <p>Composta por chips físicos. Oferece acesso <strong>extremamente rápido</strong> aos dados para uso imediato pela CPU.</p>
+                    </div>
+                    <div>
+                        <h3>Memória Virtual</h3>
+                        <p>Uma técnica que usa o disco (HD/SSD) como <strong>extensão da RAM</strong>. Permite rodar mais programas do que a memória física suportaria.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+        <section class="slide" id="slide4">
+             <div class="slide-content">
+                <h2>Técnicas de Gerenciamento</h2>
+                <ul>
+                    <li><strong>Particionamento:</strong> Divide a memória em blocos (fixos ou dinâmicos) para alocar aos processos.</li>
+                    <li><strong>Paginação:</strong> Divide a memória em blocos de tamanho fixo (Páginas e Frames) para mapeamento eficiente.</li>
+                    <li><strong>Segmentação:</strong> Divide a memória em blocos lógicos de tamanho variável (Código, Dados, Pilha), refletindo a estrutura do programa.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 5: Estratégias de Substituição -->
+        <section class="slide" id="slide5">
+            <div class="slide-content">
+                <h2>Estratégias de Substituição de Páginas</h2>
+                <p>Quando a RAM está cheia, o SO precisa decidir qual página remover. Algoritmos decidem isso:</p>
+                <ul>
+                    <li><strong>FIFO:</strong> Remove a página mais antiga.</li>
+                    <li><strong>LRU:</strong> Remove a página menos usada recentemente.</li>
+                    <li><strong>OPT:</strong> Remove a que demorará mais para ser usada (padrão ideal).</li>
+                    <li><strong>LFU:</strong> Remove a página usada com menos frequência.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 6: Gerenciamento no Windows -->
+        <section class="slide" id="slide6">
+            <div class="slide-content">
+                <h2>Gerenciamento de Memória no Windows</h2>
+                <p>O Windows dá a cada processo seu próprio <strong>espaço de endereço virtual</strong>, isolando-os e garantindo segurança. Um programa não pode corromper a memória de outro.</p>
+                <div class="comparison-grid">
+                    <div>
+                        <h3>Importante</h3>
+                        <p>Windows não permite que algum programa acesse a memória RAM física diretamente, ao invés disso ele dá a cada processo seu próprio espaço de endereçamento virtual</p>
+                    </div>
+                    <div>
+                        <h3>Processos 32-bit</h3>
+                        <p>Até <strong>4 GB</strong> de espaço virtual.</p>
+                    </div>
+                    <div>
+                        <h3>Processos 64-bit</h3>
+                        <p>Até <strong>8 Terabytes</strong> de espaço virtual.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Conclusão -->
+        <section class="slide slide-title" id="slide7">
+            <div class="slide-content">
+                <h1>Obrigado!</h1>
+                <p class="subtitle">Perguntas?</p>
+            </div>
+        </section>
+
+
+        <!-- Navegação e Progresso -->
+        <button class="nav-arrow" id="prev">&#10094;</button>
+        <button class="nav-arrow" id="next">&#10095;</button>
+        <div class="progress-dots"></div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleciona todos os elementos relevantes
+            const slides = document.querySelectorAll('.slide');
+            const nextBtn = document.getElementById('next');
+            const prevBtn = document.getElementById('prev');
+            const dotsContainer = document.querySelector('.progress-dots');
+
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            // Função para criar os indicadores de progresso (pontos)
+            function createDots() {
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    dot.addEventListener('click', () => goToSlide(i));
+                    dotsContainer.appendChild(dot);
+                }
+            }
+            
+            // Função para atualizar a aparência dos slides e dos pontos
+            function updateSlides() {
+                // Atualiza os slides
+                slides.forEach((slide, index) => {
+                    if (index === currentSlide) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+
+                // Atualiza os pontos
+                const dots = document.querySelectorAll('.dot');
+                dots.forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+                
+                // Esconde/mostra botões de navegação
+                prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
+                nextBtn.style.display = currentSlide === totalSlides - 1 ? 'none' : 'flex';
+            }
+
+            // Funções de navegação
+            function showNextSlide() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlides();
+                }
+            }
+
+            function showPrevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlides();
+                }
+            }
+            
+            function goToSlide(slideIndex) {
+                 if (slideIndex >= 0 && slideIndex < totalSlides) {
+                    currentSlide = slideIndex;
+                    updateSlides();
+                }
+            }
+
+            // Adiciona os event listeners para os botões e teclado
+            nextBtn.addEventListener('click', showNextSlide);
+            prevBtn.addEventListener('click', showPrevSlide);
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    showNextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevSlide();
+                }
+            });
+
+            // Inicialização da apresentação
+            createDots();
+            updateSlides();
+        });
+    </script>
+</body>
+</html>
